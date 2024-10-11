@@ -1,5 +1,8 @@
+# import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
+
 
 # data_plotting.py:
 # Отвечает за визуализацию данных.
@@ -35,5 +38,9 @@ def create_and_save_plot(data, ticker, period, filename=None):
     if filename is None:
         filename = f"{ticker}_{period}_stock_price_chart.png"
 
-    plt.savefig(filename)
-    print(f"График сохранен как {filename}")
+    export_folder = "export/chart"
+    if not os.path.exists(export_folder):
+        os.makedirs(export_folder)
+    export_path = os.path.join(export_folder, filename)
+    plt.savefig(export_path)
+    print(f"График сохранен как {export_path}")

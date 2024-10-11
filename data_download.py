@@ -2,6 +2,7 @@ import yfinance as yf
 import pandas as pd
 import os
 
+
 # data_download.py:
 # Файл отвечает за загрузку данных об акциях.
 # Содержит функции для извлечения данных об акциях из интернета и расчёта скользящего среднего.
@@ -33,26 +34,34 @@ def add_moving_average(data, window_size=5):
 
 def export_data_to_csv(data, filename):
     """
-    Экспортирует данные в файл CSV.
+    Экспортирует данные в файл CSV в новую папку Экспорты.
 
     Параметры:
     data (DataFrame): данные для экспорта
     filename (str): имя файла для сохранения данных
     """
-    data.to_csv(filename, index=False)
-    print(f"Данные экспортированы в {filename}")
+    export_folder = "export"
+    if not os.path.exists(export_folder):
+        os.makedirs(export_folder)
+    export_path = os.path.join(export_folder, filename)
+    data.to_csv(export_path, index=False)
+    print(f"Данные экспортированы в {export_path}")
 
 
 def export_data_to_excel(data, filename):
     """
-    Экспортирует данные в файл Excel.
+    Экспортирует данные в файл Excel в новую папку Экспорты.
 
     Параметры:
     data (DataFrame): данные для экспорта
     filename (str): имя файла для сохранения данных
     """
-    data.to_excel(filename, index=False)
-    print(f"Данные экспортированы в {filename}")
+    export_folder = "export"
+    if not os.path.exists(export_folder):
+        os.makedirs(export_folder)
+    export_path = os.path.join(export_folder, filename)
+    data.to_excel(export_path, index=False)
+    print(f"Данные экспортированы в {export_path}")
 
 
 def collect_data(stock_data, ticker, period):
@@ -77,28 +86,6 @@ def collect_data(stock_data, ticker, period):
     return df
 
 
-# def collect_console_data(stock_data, ticker, period):
-#     """
-#     Собирает данные в таблицу для консоли.
-#
-#     Параметры:
-#     stock_data (DataFrame): Данные об акциях
-#     ticker (str): Тикер, введенный пользователем
-#     period (str): Период, введенный пользователем
-#     """
-#     data = {
-#         'Дата выгрузки': [pd.Timestamp.now()],
-#         'Тикер': [ticker],
-#         'Период': [period],
-#         'Средняя цена закрытия': [stock_data['Close'].mean()],
-#         'Максимальная цена закрытия': [stock_data['Close'].max()],
-#         'Минимальная цена закрытия': [stock_data['Close'].min()],
-#         'Колебания цены': [(stock_data['Close'].max() - stock_data['Close'].min()) / stock_data['Close'].mean()]
-#     }
-#     df = pd.DataFrame(data)
-#     return df
-
-
 def export_console_data_to_csv(data, filename):
     """
     Экспортирует данные, которые выводили в консоль в файл CSV.
@@ -119,8 +106,15 @@ def export_console_data_to_excel(data, filename):
     data (DataFrame): данные для экспорта
     filename (str): имя файла для сохранения данных
     """
-    data.to_excel(filename, index=False)
-    print(f"Данные экспортированы в {filename}")
+    export_folder = "export/export"
+    if not os.path.exists(export_folder):
+        os.makedirs(export_folder)
+    export_path = os.path.join(export_folder, filename)
+    if not os.path.exists(export_path):
+        data.to_excel(export_path, index=False)
+        print(f"Данные экспортированы в {export_path}")
+    else:
+        print(f"Файл {export_path} уже существует")
 
 
 def collect_console_data_new(stock_data, ticker, period, filename):
@@ -145,15 +139,20 @@ def collect_console_data_new(stock_data, ticker, period, filename):
     df = pd.DataFrame(data)
     df['Дата выгрузки'] = pd.to_datetime(df['Дата выгрузки'])  # Преобразуем к типу datetime
 
+    export_folder = "export"
+    if not os.path.exists(export_folder):
+        os.makedirs(export_folder)
+    export_path = os.path.join(export_folder, filename)
+
     # Проверяем, существует ли файл
-    if os.path.exists(filename):
-        # Если файл существует, читаем существующие данные и добавляем новые
-        existing_data = pd.read_csv(filename)
+    if os.path.exists(export_path):
+        # Если файл существует, читаем суще��твующие данные и добавляем новые
+        existing_data = pd.read_csv(export_path)
         existing_data['Дата выгрузки'] = pd.to_datetime(existing_data['Дата выгрузки'],
                                                         errors='coerce')  # Преобразуем к типу datetime
         df = pd.concat([existing_data, df])
         df['Дата выгрузки'] = pd.to_datetime(df['Дата выгрузки'], errors='coerce')  # Преобразуем к типу datetime
         df = df.sort_values(by='Дата выгрузки')  # Сортируем по дате выгрузки
 
-    df.to_csv(filename, index=False)
-    print(f"Данные экспортированы в {filename}")
+    df.to_csv(export_path, index=False)
+    print(f"Данные экспортированы в {export_path}")
