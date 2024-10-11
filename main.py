@@ -1,7 +1,7 @@
 import data_download as dd
 import data_plotting as dplt
 import analysis_data_mean as da
-import pandas as pd
+# import pandas as pd
 import os
 
 """
@@ -32,11 +32,19 @@ def main():
     # Add moving average to the data
     stock_data = dd.add_moving_average(stock_data)
 
+    # Let's add RSI
+    stock_data = dd.calculate_rsi(stock_data)
+
+    # Adding a function call
+    stock_data = dd.calculate_macd(stock_data)
+
     # Plot the data
     dplt.create_and_save_plot(stock_data, ticker, period)
 
     # Calculate and display mean closing price
     da.display_mean_closing_price(stock_data)
+
+    # da.plot_rsi(stock_data)
 
     # Notify if strong fluctuations
     threshold_options = {
@@ -63,10 +71,6 @@ def main():
     filename = "console_data_all.csv"
     export_path = os.path.join(export_folder, filename)
     dd.collect_console_data_new(stock_data, ticker, period, export_path)
-
-    # Export console data to Excel
-    filename = "console_data_all.xlsx"
-    dd.export_console_data_to_excel(pd.DataFrame(), filename)
 
 
 if __name__ == "__main__":

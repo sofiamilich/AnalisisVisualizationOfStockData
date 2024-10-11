@@ -29,3 +29,8 @@ def notify_if_strong_fluctuations(data, threshold_options):
         if fluctuation > threshold:
             print(f"{description} цены акций за день, на {fluctuation} %")
             break
+
+
+def plot_rsi():
+    """Отображает значения RSI"""
+    pass
