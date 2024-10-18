@@ -1,7 +1,10 @@
-# import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 import pandas as pd
 import os
+import seaborn as sns
+
+# Устанавливаем стиль seaborn
+sns.set()
 
 
 # data_plotting.py:
@@ -13,7 +16,10 @@ import os
 # Создаём график, отображающий цены закрытия и скользящие средние.
 # Предоставляет возможность сохранения графика в файл. Параметр filename -
 # если он не указан, имя файла генерируется автоматически.
-def create_and_save_plot(data, ticker, period, filename=None):
+def create_and_save_plot(data, ticker, period, style='classic', filename=None):
+    """Создаёт график, отображающий цены закрытия и скользящие средние."""
+
+    plt.style.use(style)  # Применяем выбранный стиль
     plt.figure(figsize=(10, 6))
 
     if 'Date' not in data:

@@ -2,9 +2,15 @@ import data_download as dd
 import analysis_data_mean as da
 import os
 import data_plotting as dplt
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def main():
+    # Выводим доступные стили
+    print("Доступные стили для графика:", plt.style.available)
+    # Устанавливаем стиль seaborn
+    sns.set()
     print("Добро пожаловать в инструмент получения и построения графиков биржевых данных.")
     print("Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), "
           "GOOGL (Alphabet Inc), MSFT (Microsoft Corporation), AMZN (Amazon.com Inc), TSLA (Tesla Inc).")
@@ -32,8 +38,13 @@ def main():
     # Adding a function call
     stock_data = dd.calculate_macd(stock_data)
 
+    # User selects the style of the plot
+    style = input("Выберите стиль графика (например, 'Solarize_Light2', '_classic_test_patch', '_mpl-gallery',"
+                  " '_mpl-gallery-nogrid', 'bmh', 'classic', 'dark_background', 'fast', 'fivethirtyeight', 'ggplot', "
+                  "'grayscale', 'seaborn-v0_8'): ")
+
     # Plot the data dplt.create_and_save_plot(stock_data, ticker, period)
-    dplt.create_and_save_plot(stock_data, ticker, period)
+    dplt.create_and_save_plot(stock_data, ticker, period, style)
 
     # Calculate and display mean closing price
     da.display_mean_closing_price(stock_data)
