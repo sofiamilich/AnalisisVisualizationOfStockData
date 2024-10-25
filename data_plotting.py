@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 import seaborn as sns
+from data_download import calculate_standard_deviation
 
 # Устанавливаем стиль seaborn
 sns.set()
@@ -45,6 +46,12 @@ def create_and_save_plot(data, ticker, period, style='classic', filename=None):
         if 'MACD' in data.columns and 'Signal' in data.columns:
             plt.plot(data['Date'], data['MACD'], label='MACD')
             plt.plot(data['Date'], data['Signal'], label='Signal')
+
+    # Добавляем стандартное отклонение на график
+    std_dev = calculate_standard_deviation(data)
+    mean_price = data['Close'].mean()
+    plt.axhline(mean_price + std_dev, color='red', linestyle='--', label='Mean + Std Dev')
+    plt.axhline(mean_price - std_dev, color='blue', linestyle='--', label='Mean - Std Dev')
 
     plt.title(f"{ticker} Цена акций с течением времени")
     plt.xlabel("Дата")

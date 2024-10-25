@@ -49,6 +49,9 @@ def main():
     # Calculate and display mean closing price
     da.display_mean_closing_price(stock_data)
 
+    # Calculate and display standard deviation
+    da.display_standard_deviation(stock_data)
+
     # Notify if strong fluctuations
     threshold_options = {
         5: "Небольшие колебания цены акций",

@@ -1,15 +1,18 @@
+from data_download import calculate_standard_deviation
+
+
+def display_mean_closing_price(data):
+    """Вычисляет и выводит среднюю цену закрытия акций за период."""
+    mean_price = data['Close'].mean()
+    print(f"Средняя цена закрытия акций за период: {mean_price}")
+
+
 def mean_closing_price(data):
     """Вычисляет среднюю цену закрытия акций за период
     data - DataFrame с данными об акциях
     float - средняя цена закрытия акций за период"""
 
     return data['Close'].mean()
-
-
-def display_mean_closing_price(data):
-    """Вычисляем и выводим среднюю цену закрытия акций за период"""
-    mean_price = mean_closing_price(data)
-    print(f"Средняя цена закрытия акций за период: {mean_price}")
 
 
 def notify_if_strong_fluctuations(data, threshold_options):
@@ -34,3 +37,9 @@ def notify_if_strong_fluctuations(data, threshold_options):
 def plot_rsi():
     """Отображает значения RSI"""
     pass
+
+
+def display_standard_deviation(data):
+    """Вычисляем и выводим стандартное отклонение цен закрытия акций за период."""
+    std_dev = calculate_standard_deviation(data)
+    print(f"Стандартное отклонение цен закрытия акций за период: {std_dev}")

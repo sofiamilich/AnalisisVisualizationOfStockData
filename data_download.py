@@ -112,6 +112,7 @@ def collect_console_data_new(stock_data, ticker, period, filename):
         'Средняя цена закрытия': [stock_data['Close'].mean()],
         'Максимальная цена закрытия': [stock_data['Close'].max()],
         'Минимальная цена закрытия': [stock_data['Close'].min()],
+        'Стандартное отклонение': [stock_data['Close'].std()],
         'Колебания цены': [(stock_data['Close'].max() - stock_data['Close'].min()) / stock_data['Close'].mean()]
     }
     df = pd.DataFrame(data)
@@ -183,3 +184,8 @@ def calculate_macd(data, fast_window=12, slow_window=26, signal_window=9):
     data['MACD'] = data['EMA_Fast'] - data['EMA_Slow']
     data['Signal'] = data['MACD'].ewm(span=signal_window, adjust=False).mean()
     return data
+
+
+def calculate_standard_deviation(data):
+    """Вычисляет стандартное отклонение цен закрытия акций."""
+    return data['Close'].std()
